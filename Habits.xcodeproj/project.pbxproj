@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0BE3C828A44B2800B4A361 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0BE3C728A44B2800B4A361 /* Settings.swift */; };
+		4F0BE3CA28A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0BE3C928A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift */; };
 		4F2CD35C28A1B8F100BD07A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD35B28A1B8F100BD07A9 /* AppDelegate.swift */; };
 		4F2CD35E28A1B8F100BD07A9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD35D28A1B8F100BD07A9 /* SceneDelegate.swift */; };
 		4F2CD36028A1B8F100BD07A9 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD35F28A1B8F100BD07A9 /* HomeCollectionViewController.swift */; };
@@ -48,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F0BE3C728A44B2800B4A361 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		4F0BE3C928A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewDiffableDataSource+ViewModel.swift"; sourceTree = "<group>"; };
 		4F2CD35828A1B8F000BD07A9 /* Habits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habits.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2CD35B28A1B8F100BD07A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F2CD35D28A1B8F100BD07A9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				4F58A87A28A2E6C6005FCCAF /* Color.swift */,
 				4F58A87C28A2E72E005FCCAF /* APIRequest.swift */,
 				4F58A87E28A2EC9B005FCCAF /* APIService.swift */,
+				4F0BE3C728A44B2800B4A361 /* Settings.swift */,
+				4F0BE3C928A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -328,7 +334,9 @@
 				4F58A87328A2E5BF005FCCAF /* HabitDetailViewController.swift in Sources */,
 				4F58A87F28A2EC9B005FCCAF /* APIService.swift in Sources */,
 				4F58A87728A2E67F005FCCAF /* Habit.swift in Sources */,
+				4F0BE3C828A44B2800B4A361 /* Settings.swift in Sources */,
 				4F2CD36628A1B8F100BD07A9 /* Habits.xcdatamodeld in Sources */,
+				4F0BE3CA28A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift in Sources */,
 				4F2CD35E28A1B8F100BD07A9 /* SceneDelegate.swift in Sources */,
 				4F58A88128A2EEAA005FCCAF /* PrimarySecondaryTextCollectionViewCell.swift in Sources */,
 				4F58A86F28A2E2FD005FCCAF /* UserCollectionViewController.swift in Sources */,
