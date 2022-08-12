@@ -5,7 +5,7 @@
 //  Created by elliott on 8/10/22.
 //
 
-import Foundation
+import UIKit
 
 struct Settings {
     
@@ -13,6 +13,16 @@ struct Settings {
     
     enum Setting {
         static let favoriteHabits = "favoriteHabits"
+        static let followedUserIDs = "followedUserIDs"
+    }
+    
+    var followedUserIDs: [String] {
+        get {
+            return unarchiveJSON(key: Setting.followedUserIDs) ?? []
+        }
+        set {
+            archiveJSON(value: newValue, key: Setting.followedUserIDs)
+        }
     }
     
     private let defaults = UserDefaults.standard
@@ -40,5 +50,16 @@ struct Settings {
         }
     }
     
+    mutating func toggleFavorites(_ habit: Habit) {
+        var favorites = favoriteHabits
+        
+        if favorites.contains(habit) {
+            favorites = favorites.filter { $0 != habit }
+        } else {
+            favorites.append(habit)
+        }
+        
+        favoriteHabits = favorites
+    }
     
 }

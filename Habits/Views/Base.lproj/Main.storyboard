@@ -26,7 +26,7 @@
             </objects>
             <point key="canvasLocation" x="344.92753623188406" y="20.758928571428569"/>
         </scene>
-        <!--Home Collection View Controller-->
+        <!--Home-->
         <scene sceneID="CuZ-Gl-SzE">
             <objects>
                 <collectionViewController id="k73-tQ-ieU" customClass="HomeCollectionViewController" customModule="Habits" customModuleProvider="target" sceneMemberID="viewController">
@@ -55,7 +55,7 @@
                             <outlet property="delegate" destination="k73-tQ-ieU" id="cRP-ny-zyk"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="cl1-f6-HYw"/>
+                    <navigationItem key="navigationItem" title="Home" id="cl1-f6-HYw"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9mJ-Ri-XgX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -162,7 +162,7 @@
             </objects>
             <point key="canvasLocation" x="1192.753623188406" y="20.758928571428569"/>
         </scene>
-        <!--User Collection View Controller-->
+        <!--People-->
         <scene sceneID="U6Q-xU-zeK">
             <objects>
                 <collectionViewController id="hzA-MS-jNN" customClass="UserCollectionViewController" customModule="Habits" customModuleProvider="target" sceneMemberID="viewController">
@@ -177,14 +177,27 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="aZx-jM-Mgd">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="User" id="aZx-jM-Mgd" customClass="PrimarySecondaryTextCollectionViewCell" customModule="Habits" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="AAj-cl-2ys">
                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COq-fd-4MF">
+                                            <rect key="frame" x="43" y="53.5" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="COq-fd-4MF" firstAttribute="centerY" secondItem="AAj-cl-2ys" secondAttribute="centerY" id="Dh0-FJ-MJc"/>
+                                        <constraint firstItem="COq-fd-4MF" firstAttribute="centerX" secondItem="AAj-cl-2ys" secondAttribute="centerX" id="yw3-SS-KQ7"/>
+                                    </constraints>
                                 </collectionViewCellContentView>
                                 <connections>
+                                    <outlet property="primaryTextLabel" destination="COq-fd-4MF" id="eph-e6-Zsk"/>
                                     <segue destination="A0f-9T-6rF" kind="show" id="B0K-JJ-x8s"/>
                                 </connections>
                             </collectionViewCell>
@@ -194,7 +207,7 @@
                             <outlet property="delegate" destination="hzA-MS-jNN" id="Ru5-f2-X4w"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="KvU-oc-0H4"/>
+                    <navigationItem key="navigationItem" title="People" id="KvU-oc-0H4"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P3F-sW-viy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -217,7 +230,7 @@
             </objects>
             <point key="canvasLocation" x="2068.1159420289855" y="20.758928571428569"/>
         </scene>
-        <!--Log Habit Collection View Controller-->
+        <!--Logged Habits-->
         <scene sceneID="d3o-8q-mTS">
             <objects>
                 <collectionViewController id="guv-lW-quG" customClass="LogHabitCollectionViewController" customModule="Habits" customModuleProvider="target" sceneMemberID="viewController">
@@ -246,7 +259,7 @@
                             <outlet property="delegate" destination="guv-lW-quG" id="Fqd-hO-1If"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="tv0-On-d0x"/>
+                    <navigationItem key="navigationItem" title="Logged Habits" id="tv0-On-d0x"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hbq-3Y-eBa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
