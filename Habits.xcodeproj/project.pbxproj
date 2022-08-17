@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4F0BE3C828A44B2800B4A361 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0BE3C728A44B2800B4A361 /* Settings.swift */; };
 		4F0BE3CA28A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0BE3C928A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift */; };
+		4F1559D028AB05820063D680 /* HabitStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1559CF28AB05820063D680 /* HabitStatistics.swift */; };
+		4F1559D228AB06460063D680 /* UserCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1559D128AB06460063D680 /* UserCount.swift */; };
 		4F2CD35C28A1B8F100BD07A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD35B28A1B8F100BD07A9 /* AppDelegate.swift */; };
 		4F2CD35E28A1B8F100BD07A9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD35D28A1B8F100BD07A9 /* SceneDelegate.swift */; };
 		4F2CD36028A1B8F100BD07A9 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD35F28A1B8F100BD07A9 /* HomeCollectionViewController.swift */; };
@@ -19,6 +21,8 @@
 		4F2CD37628A1B8F300BD07A9 /* HabitsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD37528A1B8F300BD07A9 /* HabitsTests.swift */; };
 		4F2CD38028A1B8F300BD07A9 /* HabitsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD37F28A1B8F300BD07A9 /* HabitsUITests.swift */; };
 		4F2CD38228A1B8F300BD07A9 /* HabitsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2CD38128A1B8F300BD07A9 /* HabitsUITestsLaunchTests.swift */; };
+		4F41341828AD849000EE96B9 /* UserStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41341728AD849000EE96B9 /* UserStatistics.swift */; };
+		4F41341A28AD84C900EE96B9 /* HabitCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41341928AD84C900EE96B9 /* HabitCount.swift */; };
 		4F58A86D28A2E2EE005FCCAF /* HabitCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A86C28A2E2EE005FCCAF /* HabitCollectionViewController.swift */; };
 		4F58A86F28A2E2FD005FCCAF /* UserCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A86E28A2E2FD005FCCAF /* UserCollectionViewController.swift */; };
 		4F58A87128A2E311005FCCAF /* LogHabitCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A87028A2E311005FCCAF /* LogHabitCollectionViewController.swift */; };
@@ -54,6 +58,8 @@
 /* Begin PBXFileReference section */
 		4F0BE3C728A44B2800B4A361 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		4F0BE3C928A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewDiffableDataSource+ViewModel.swift"; sourceTree = "<group>"; };
+		4F1559CF28AB05820063D680 /* HabitStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitStatistics.swift; sourceTree = "<group>"; };
+		4F1559D128AB06460063D680 /* UserCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCount.swift; sourceTree = "<group>"; };
 		4F2CD35828A1B8F000BD07A9 /* Habits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habits.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2CD35B28A1B8F100BD07A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F2CD35D28A1B8F100BD07A9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +74,8 @@
 		4F2CD37B28A1B8F300BD07A9 /* HabitsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F2CD37F28A1B8F300BD07A9 /* HabitsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsUITests.swift; sourceTree = "<group>"; };
 		4F2CD38128A1B8F300BD07A9 /* HabitsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4F41341728AD849000EE96B9 /* UserStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatistics.swift; sourceTree = "<group>"; };
+		4F41341928AD84C900EE96B9 /* HabitCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCount.swift; sourceTree = "<group>"; };
 		4F58A86C28A2E2EE005FCCAF /* HabitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCollectionViewController.swift; sourceTree = "<group>"; };
 		4F58A86E28A2E2FD005FCCAF /* UserCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCollectionViewController.swift; sourceTree = "<group>"; };
 		4F58A87028A2E311005FCCAF /* LogHabitCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHabitCollectionViewController.swift; sourceTree = "<group>"; };
@@ -195,6 +203,10 @@
 				4F0BE3C728A44B2800B4A361 /* Settings.swift */,
 				4F0BE3C928A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift */,
 				4F9FB33B28A6B71300741014 /* User.swift */,
+				4F1559CF28AB05820063D680 /* HabitStatistics.swift */,
+				4F1559D128AB06460063D680 /* UserCount.swift */,
+				4F41341728AD849000EE96B9 /* UserStatistics.swift */,
+				4F41341928AD84C900EE96B9 /* HabitCount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -331,12 +343,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F58A87128A2E311005FCCAF /* LogHabitCollectionViewController.swift in Sources */,
+				4F1559D228AB06460063D680 /* UserCount.swift in Sources */,
 				4F2CD36028A1B8F100BD07A9 /* HomeCollectionViewController.swift in Sources */,
 				4F58A87D28A2E72E005FCCAF /* APIRequest.swift in Sources */,
 				4F58A87528A2E5C9005FCCAF /* UserDetailViewController.swift in Sources */,
 				4F2CD35C28A1B8F100BD07A9 /* AppDelegate.swift in Sources */,
 				4F9FB33A28A6AF2D00741014 /* NamedSectionHeaderView.swift in Sources */,
+				4F41341828AD849000EE96B9 /* UserStatistics.swift in Sources */,
 				4F58A86D28A2E2EE005FCCAF /* HabitCollectionViewController.swift in Sources */,
+				4F1559D028AB05820063D680 /* HabitStatistics.swift in Sources */,
+				4F41341A28AD84C900EE96B9 /* HabitCount.swift in Sources */,
 				4F58A87B28A2E6C6005FCCAF /* Color.swift in Sources */,
 				4F58A87328A2E5BF005FCCAF /* HabitDetailViewController.swift in Sources */,
 				4F58A87F28A2EC9B005FCCAF /* APIService.swift in Sources */,
