@@ -9,6 +9,8 @@ import UIKit
 
 struct Settings {
     
+    let currentUser = User(id: "activeUser", name: "Elliott Griffin", color: nil, bio: nil)
+    
     static var shared = Settings()
     
     enum Setting {
@@ -60,6 +62,18 @@ struct Settings {
         }
         
         favoriteHabits = favorites
+    }
+    
+    mutating func toggleFollowed(user: User) {
+        var updated = followedUserIDs
+
+        if updated.contains(user.id) {
+            updated = updated.filter { $0 != user.id }
+        } else {
+            updated.append(user.id)
+        }
+
+        followedUserIDs = updated
     }
     
 }

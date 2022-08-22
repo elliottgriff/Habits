@@ -20,6 +20,15 @@ class UserCollectionViewController: UICollectionViewController {
 
     }
     
+    @IBSegueAction func showUserDetail(_ coder: NSCoder, sender: UICollectionViewCell?) -> UserDetailViewController? {
+        
+        guard let cell = sender,
+              let indexPath = collectionView.indexPath(for: cell),
+                let item = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        
+        return UserDetailViewController(coder: coder, user: item.user)
+    }
+    
     typealias DataSourceType = UICollectionViewDiffableDataSource<ViewModel.Section, ViewModel.Item>
     
     enum ViewModel {
@@ -50,6 +59,22 @@ class UserCollectionViewController: UICollectionViewController {
     
     var dataSource: DataSourceType!
     var model = Model()
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { (elements) -> UIMenu? in
+            guard let item = self.dataSource.itemIdentifier(for: indexPath) else { return nil }
+
+            let favoriteToggle = UIAction(title: item.isFollowed ? "Unfollow" : "Follow") { (action) in
+                Settings.shared.toggleFollowed(user: item.user)
+                self.updateCollectionView()
+            }
+
+            return UIMenu(title: "", image: nil, identifier: nil, options: [], children: [favoriteToggle])
+        }
+
+        return config
+    }
     
     func update() {
         UserRequest().send { result in

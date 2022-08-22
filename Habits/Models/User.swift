@@ -5,7 +5,7 @@
 //  Created by elliott on 8/12/22.
 //
 
-import Foundation
+import UIKit
 
 struct User {
     let id: String
@@ -24,7 +24,6 @@ extension User: Hashable {
     static func ==(_ lhs: User, _ rhs: User) -> Bool {
         return lhs.id == rhs.id
     }
-    
 }
 
 extension User: Comparable {
