@@ -34,6 +34,7 @@
 		4F58A87D28A2E72E005FCCAF /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A87C28A2E72E005FCCAF /* APIRequest.swift */; };
 		4F58A87F28A2EC9B005FCCAF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A87E28A2EC9B005FCCAF /* APIService.swift */; };
 		4F58A88128A2EEAA005FCCAF /* PrimarySecondaryTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A88028A2EEAA005FCCAF /* PrimarySecondaryTextCollectionViewCell.swift */; };
+		4F82A3A628B55A1200C3FDD1 /* FollowedUserCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A3A528B55A1200C3FDD1 /* FollowedUserCollectionViewCell.swift */; };
 		4F9FB33A28A6AF2D00741014 /* NamedSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FB33928A6AF2D00741014 /* NamedSectionHeaderView.swift */; };
 		4F9FB33C28A6B71300741014 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9FB33B28A6B71300741014 /* User.swift */; };
 		4FD330FF28B03202003FB25A /* LoggedHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD330FE28B03202003FB25A /* LoggedHabit.swift */; };
@@ -90,6 +91,7 @@
 		4F58A87C28A2E72E005FCCAF /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		4F58A87E28A2EC9B005FCCAF /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		4F58A88028A2EEAA005FCCAF /* PrimarySecondaryTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimarySecondaryTextCollectionViewCell.swift; sourceTree = "<group>"; };
+		4F82A3A528B55A1200C3FDD1 /* FollowedUserCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowedUserCollectionViewCell.swift; sourceTree = "<group>"; };
 		4F9FB33928A6AF2D00741014 /* NamedSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedSectionHeaderView.swift; sourceTree = "<group>"; };
 		4F9FB33B28A6B71300741014 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4FD330FE28B03202003FB25A /* LoggedHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedHabit.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				4F58A88028A2EEAA005FCCAF /* PrimarySecondaryTextCollectionViewCell.swift */,
 				4F9FB33928A6AF2D00741014 /* NamedSectionHeaderView.swift */,
 				4FE8AF0A28B066A900F0FC90 /* LeaderboardHabitCollectionViewCell.swift */,
+				4F82A3A528B55A1200C3FDD1 /* FollowedUserCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				4F0BE3CA28A454B900B4A361 /* UICollectionViewDiffableDataSource+ViewModel.swift in Sources */,
 				4F2CD35E28A1B8F100BD07A9 /* SceneDelegate.swift in Sources */,
 				4F58A88128A2EEAA005FCCAF /* PrimarySecondaryTextCollectionViewCell.swift in Sources */,
+				4F82A3A628B55A1200C3FDD1 /* FollowedUserCollectionViewCell.swift in Sources */,
 				4F58A86F28A2E2FD005FCCAF /* UserCollectionViewController.swift in Sources */,
 				4F58A87928A2E6A5005FCCAF /* Category.swift in Sources */,
 				4FD330FF28B03202003FB25A /* LoggedHabit.swift in Sources */,

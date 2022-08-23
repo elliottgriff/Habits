@@ -10,7 +10,58 @@ import UIKit
 private let sectionHeaderKind = "SectionHeader"
 private let sectionHeaderIdentifier = "HeaderView"
 
+let favoriteHabitColor = UIColor(hue: 0.15, saturation: 1, brightness: 0.9, alpha: 1)
+
 class HabitCollectionViewController: UICollectionViewController {
+    
+    typealias DataSourceType = UICollectionViewDiffableDataSource<ViewModel.Section, ViewModel.Item>
+    
+    enum ViewModel {
+        enum Section: Hashable, Equatable, Comparable {
+            case favorites
+            case category(_ category: Category)
+            
+            var sectionColor: UIColor {
+                switch self {
+                case .favorites:
+                    return favoriteHabitColor
+                case .category(let category):
+                    return category.color.uiColor
+                }
+            }
+            
+            static func < (lhs: Section, rhs: Section) -> Bool {
+                switch (lhs, rhs) {
+                case (.category(let l), .category(let r)):
+                    return l.name < r.name
+                case (.favorites, _):
+                    return true
+                case (_, .favorites):
+                    return false
+                }
+            }
+        }
+        
+        struct Item: Hashable, Equatable, Comparable {
+            let habit: Habit
+            let isFavorite: Bool
+            
+            static func < (lhs: Item, rhs: Item) -> Bool {
+                return lhs.habit < rhs.habit
+            }
+        }
+        
+    }
+    
+    struct Model {
+        var habitsByName = [String: Habit]()
+        var favoriteHabits: [Habit] {
+            return Settings.shared.favoriteHabits
+        }
+    }
+    
+    var dataSource: DataSourceType!
+    var model = Model()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,36 +81,9 @@ class HabitCollectionViewController: UICollectionViewController {
         update()
     }
     
-    typealias DataSourceType = UICollectionViewDiffableDataSource<ViewModel.Section, ViewModel.Item>
     
-    enum ViewModel {
-        enum Section: Hashable, Comparable {
-            case favorites
-            case category(_ category: Category)
-            
-            static func < (lhs: Section, rhs: Section) -> Bool {
-                switch (lhs, rhs) {
-                case (.category(let l), .category(let r)):
-                    return l.name < r.name
-                case (.favorites, _):
-                    return true
-                case (_, favorites):
-                    return false
-                }
-            }
-        }
-        typealias Item = Habit
-    }
     
-    struct Model {
-        var habitsByName = [String: Habit]()
-        var favoriteHabits: [Habit] {
-            return Settings.shared.favoriteHabits
-        }
-    }
-    
-    var dataSource: DataSourceType!
-    var model = Model()
+
     
     func update() {
         HabitRequest().send { result in
@@ -80,13 +104,16 @@ class HabitCollectionViewController: UICollectionViewController {
         
         var itemsBySection = model.habitsByName.values.reduce(into:
             [ViewModel.Section: [ViewModel.Item]]()) { partial, habit in
-            let item = habit
             
             let section: ViewModel.Section
+            let item: ViewModel.Item
+            
             if model.favoriteHabits.contains(habit) {
                 section = .favorites
+                item = ViewModel.Item(habit: habit, isFavorite: true)
             } else {
                 section = .category(habit.category)
+                item = ViewModel.Item(habit: habit, isFavorite: false)
             }
             
             partial[section, default: []].append(item)
@@ -100,12 +127,16 @@ class HabitCollectionViewController: UICollectionViewController {
         
     }
     
+    func configureCell(_ cell: PrimarySecondaryTextCollectionViewCell, withItem item: ViewModel.Item) {
+        cell.primaryTextLabel.text = item.habit.name
+    }
+    
     func createDataSource() -> DataSourceType {
         
         let dataSource = DataSourceType(collectionView: collectionView) {
-            collectionView, indexPath, itemIdentifier in
+            (collectionView, indexPath, item) in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Habit", for: indexPath) as! PrimarySecondaryTextCollectionViewCell
-            cell.primaryTextLabel.text = itemIdentifier.name
+            self.configureCell(cell, withItem: item)
             
             return cell
         }
@@ -123,6 +154,9 @@ class HabitCollectionViewController: UICollectionViewController {
             case .category(let category):
                 header.nameLabel.text = category.name
             }
+            
+            header.backgroundColor = section.sectionColor
+            
             return header
         }
         return dataSource
@@ -130,14 +164,11 @@ class HabitCollectionViewController: UICollectionViewController {
     
     func createLayout() -> UICollectionViewCompositionalLayout {
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .absolute(44))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                       subitem: item, count: 1)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(44))
+         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(36))
         
@@ -158,9 +189,9 @@ class HabitCollectionViewController: UICollectionViewController {
         let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let item = self.dataSource.itemIdentifier(for: indexPath)!
             
-            let favoriteToggle = UIAction(title: self.model.favoriteHabits.contains(item) ?
+            let favoriteToggle = UIAction(title: self.model.favoriteHabits.contains(item.habit) ?
                                           "UnFavorite" : "Favorite") { action in
-                Settings.shared.toggleFavorites(item)
+                Settings.shared.toggleFavorites(item.habit)
                 self.updateCollectionView()
             }
             
@@ -176,7 +207,7 @@ class HabitCollectionViewController: UICollectionViewController {
             return nil
         }
         
-        return HabitDetailViewController(coder: coder, habit: item)
+        return HabitDetailViewController(coder: coder, habit: item.habit)
     }
     
     

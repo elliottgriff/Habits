@@ -58,6 +58,45 @@ class HomeCollectionViewController: UICollectionViewController {
     var dataSource: DataSourceType!
     
     var updateTimer: Timer?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        UserRequest().send { result in
+            switch result {
+            case .success(let users):
+                self.model.usersByID = users
+            case .failure:
+                break;
+            }
+
+            DispatchQueue.main.async {
+                self.updateCollectionView()
+            }
+        }
+
+        HabitRequest().send { result in
+            switch result {
+            case .success(let habits):
+                self.model.habitsByName = habits
+            case .failure:
+                break;
+            }
+
+            DispatchQueue.main.async {
+                self.updateCollectionView()
+            }
+        }
+        
+        dataSource = createDataSource()
+        collectionView.dataSource = dataSource
+        collectionView.collectionViewLayout = createLayout()
+        
+        for supplementaryView in SupplementaryView.allCases {
+            supplementaryView.register(on: collectionView)
+        }
+
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -109,7 +148,6 @@ class HomeCollectionViewController: UICollectionViewController {
             func userRankingString(from userCount: UserCount) -> String {
                 var name = userCount.user.name
                 var ranking = ""
-
                 if userCount.user.id == self.model.currentUser.id {
                     name = "You"
                     ranking = " (\(ordinalString(from: myCountIndex!)))"
@@ -123,23 +161,16 @@ class HomeCollectionViewController: UICollectionViewController {
 
             switch rankedUserCounts.count {
             case 0:
-                // If 0, set the leader label to "Nobody Yet!" and leave the secondary label `nil`.
                 leadingRanking = "Nobody yet!"
             case 1:
-                // If 1, set the leader label to the only user and count.
                 let onlyCount = rankedUserCounts.first!
                 leadingRanking = userRankingString(from: onlyCount)
             default:
-                // Otherwise, do the following:
-                // Set the leader label to the user count at index 0.
                 leadingRanking = userRankingString(from: rankedUserCounts[0])
                 
-                // Check whether the index of the current user's count exists and is not 0.
                 if let myCountIndex = myCountIndex, myCountIndex != rankedUserCounts.startIndex {
-                    // If true, the user's count and ranking should be displayed in the secondary label.
                     secondaryRanking = userRankingString(from: rankedUserCounts[myCountIndex])
                 } else {
-                    // If false, the second-place user count should be displayed.
                     secondaryRanking = userRankingString(from: rankedUserCounts[1])
                 }
             }
@@ -168,46 +199,20 @@ class HomeCollectionViewController: UICollectionViewController {
             return Set(names)
         }
         
-        // Get the current user's logged habits and extract the favorites.
-
-        // Loop through all the followed users.
-
-            // If the users have a habit in common:
-
-                // Pick the habit to focus on.
-
-                // Get the full statistics (all the user counts) for that habit.
-
-                // Get the ranking for each user.
-
-                // Construct the message depending on who's leading.
-
-            // Otherwise, if the followed user has logged at least one habit:
-
-                // Get an arbitrary habit name.
-
-                // Get the full statistics (all the user counts) for that habit.
-
-                // Get the user's ranking for that habit.
-
-                // Construct the message.
-
-            // Otherwise, this user hasn't done anything.
-        
         let currentUserLoggedHabits = loggedHabitNames(for: model.currentUser)
         let favoriteLoggedHabits = Set(model.favoriteHabits.map { $0.name }).intersection(currentUserLoggedHabits)
         
-        // Loop through all the followed users.
+        // Loop through followed users.
         for followedUser in model.followedUsers.sorted(by: { $0.name < $1.name }) {
             let message: String
 
             let followedUserLoggedHabits = loggedHabitNames(for: followedUser)
             
-            // If the users have a habit in common:
+            // If users have habit in common:
                 let commonLoggedHabits = followedUserLoggedHabits.intersection(currentUserLoggedHabits)
 
                 if commonLoggedHabits.count > 0 {
-                    // Pick the habit to focus on.
+                    // Pick habit
                     let habitName: String
                     let commonFavoriteLoggedHabits = favoriteLoggedHabits.intersection(commonLoggedHabits)
 
@@ -217,10 +222,10 @@ class HomeCollectionViewController: UICollectionViewController {
                         habitName = commonLoggedHabits.sorted().first!
                     }
                     
-                    // Get the full statistics (all the user counts) for that habit.
+                    // Get statistics for habit.
                             let habitStats = model.habitStatistics.first { $0.habit.name == habitName }!
 
-                            // Get the ranking for each user.
+                            // Get ranking for each user.
                             let rankedUserCounts = habitStats.userCounts.sorted { $0.count > $1.count }
                             let currentUserRanking = rankedUserCounts.firstIndex { $0.user == model.currentUser }!
                             let followedUserRanking = rankedUserCounts.firstIndex { $0.user == followedUser }!
@@ -234,17 +239,14 @@ class HomeCollectionViewController: UICollectionViewController {
                     }
                 } else if followedUserLoggedHabits.count > 0 {
                         
-                        // Get an arbitrary habit name.
                         let habitName = followedUserLoggedHabits.sorted().first!
 
-                        // Get the full statistics (all the user counts) for that habit.
                         let habitStats = model.habitStatistics.first { $0.habit.name == habitName }!
 
-                        // Get the user's ranking for that habit.
+                        // Get the user's ranking for habit.
                         let rankedUserCounts = habitStats.userCounts.sorted { $0.count > $1.count }
                         let followedUserRanking = rankedUserCounts.firstIndex { $0.user == followedUser }!
 
-                        // Construct the message.
                         message = "Currently #\(ordinalString(from: followedUserRanking)), in \(habitName).\nMaybe you should give this habit a look."
                     } else {
                         message = "This user doesn't seem to have done much yet. Check in to see if they need any help getting started."
@@ -278,13 +280,52 @@ class HomeCollectionViewController: UICollectionViewController {
                 cell.habitNameLabel.text = name
                 cell.leaderLabel.text = leadingUserRanking
                 cell.secondaryLabel.text = secondaryUserRanking
+                
+                cell.contentView.backgroundColor =
+                   favoriteHabitColor.withAlphaComponent(0.75)
+                cell.contentView.layer.cornerRadius = 8
+                cell.layer.shadowRadius = 3
+                cell.layer.shadowColor = UIColor.systemGray3.cgColor
+                cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+                cell.layer.shadowOpacity = 1
+                cell.layer.masksToBounds = false
+                
                 return cell
             case .followedUser(let user, let message):
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FollowedUser", for: indexPath) as! PrimarySecondaryTextCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
+                   "FollowedUser", for: indexPath) as! FollowedUserCollectionViewCell
                 cell.primaryTextLabel.text = user.name
                 cell.secondaryTextLabel.text = message
                 return cell
-                
+            }
+        }
+        
+        dataSource.supplementaryViewProvider = {
+            (collectionView, kind, indexPath) in
+            guard let elementKind = SupplementaryView(rawValue: kind) else { return nil }
+            
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: elementKind.viewKind,
+                                                                       withReuseIdentifier: elementKind.reuseIdentifier,
+                                                                       for: indexPath)
+            switch elementKind {
+            case .leaderboardGroupBackground:
+//                view.backgroundColor = UIColor(hue: 0.65, saturation: 0.1, brightness: 0.95, alpha: 1)
+//                view.layer.cornerRadius = 12
+                return view
+            case .leaderboardSectionHeader:
+                let header = view as! NamedSectionHeaderView
+                header.nameLabel.text = "Leaderboard"
+                header.nameLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+                header.alignLabelToTop()
+                return header
+            case .followedUsersSectionHeader:
+                let header = view as! NamedSectionHeaderView
+                header.nameLabel.text = "Following"
+                header.nameLabel.font = UIFont.preferredFont(forTextStyle: .title2)
+                header.alignLabelToYCenter()
+                return header
+            default:
+                return nil
             }
         }
 
@@ -294,14 +335,32 @@ class HomeCollectionViewController: UICollectionViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
             switch self.dataSource.snapshot().sectionIdentifiers[sectionIndex] {
+                
             case .leaderboard:
+                
                 let leaderboardItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.3))
                 let leaderboardItem = NSCollectionLayoutItem(layoutSize: leaderboardItemSize)
 
                 let verticalTrioSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .fractionalWidth(0.75))
                 let leaderboardVerticalTrio = NSCollectionLayoutGroup.vertical(layoutSize: verticalTrioSize, subitem: leaderboardItem, count: 3)
+                
+                let groupDecorationSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.77), heightDimension: .fractionalWidth(0.77))
+                let groupAnchor = NSCollectionLayoutAnchor(edges: .all, absoluteOffset: CGPoint(x: 0, y: 0))
+                let groupDecoration = NSCollectionLayoutSupplementaryItem(layoutSize: groupDecorationSize, elementKind: SupplementaryView.leaderboardGroupBackground.viewKind, containerAnchor: groupAnchor)
+
+                leaderboardVerticalTrio.supplementaryItems = [groupDecoration]
 
                 let leaderboardSection = NSCollectionLayoutSection(group: leaderboardVerticalTrio)
+
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: SupplementaryView.leaderboardSectionHeader.viewKind, alignment: .top)
+                header.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 0, trailing: 0)
+
+                let background = NSCollectionLayoutDecorationItem.background(elementKind: SupplementaryView.leaderboardBackground.viewKind)
+
+                leaderboardSection.boundarySupplementaryItems = [header]
+                leaderboardSection.decorationItems = [background]
+                
                 leaderboardSection.interGroupSpacing = 20
                 leaderboardSection.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 0, trailing: 0)
 
@@ -309,7 +368,9 @@ class HomeCollectionViewController: UICollectionViewController {
                 leaderboardSection.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 20, trailing: 0)
 
                 return leaderboardSection
+                
             case .followedUsers:
+                
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
                 let followedUserItem = NSCollectionLayoutItem(layoutSize: itemSize)
 
@@ -317,6 +378,11 @@ class HomeCollectionViewController: UICollectionViewController {
                 let followedUserGroup = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: followedUserItem, count: 1)
 
                 let followedUserSection = NSCollectionLayoutSection(group: followedUserGroup)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: SupplementaryView.followedUsersSectionHeader.viewKind, alignment: .top)
+
+                followedUserSection.boundarySupplementaryItems = [header]
 
                 return followedUserSection
 
@@ -326,40 +392,81 @@ class HomeCollectionViewController: UICollectionViewController {
         return layout
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        UserRequest().send { result in
-            switch result {
-            case .success(let users):
-                self.model.usersByID = users
-            case .failure:
-                break;
-            }
+    
+    
+}
 
-            DispatchQueue.main.async {
-                self.updateCollectionView()
-            }
+enum SupplementaryItemType {
+    case collectionSupplementaryView
+    case layoutDecorationView
+}
+
+protocol SupplementaryItem {
+    associatedtype ViewClass: UICollectionReusableView
+    
+    var itemType: SupplementaryItemType { get }
+    
+    var reuseIdentifier: String { get }
+    var viewKind: String { get }
+    var viewClass: ViewClass.Type { get }
+    
+}
+
+extension SupplementaryItem {
+    func register(on collectionView: UICollectionView) {
+        switch itemType {
+        case .collectionSupplementaryView:
+            collectionView.register(viewClass.self,
+                                    forSupplementaryViewOfKind: viewKind,
+                                    withReuseIdentifier: reuseIdentifier)
+        case .layoutDecorationView:
+            
+            collectionView.collectionViewLayout.register(viewClass.self,
+                                                         forDecorationViewOfKind: viewKind)
         }
+    }
+}
 
-        HabitRequest().send { result in
-            switch result {
-            case .success(let habits):
-                self.model.habitsByName = habits
-            case .failure:
-                break;
-            }
-
-            DispatchQueue.main.async {
-                self.updateCollectionView()
-            }
-        }
-        
-        dataSource = createDataSource()
-        collectionView.dataSource = dataSource
-        collectionView.collectionViewLayout = createLayout()
-
+enum SupplementaryView: String, CaseIterable, SupplementaryItem {
+    
+    case leaderboardSectionHeader
+    case leaderboardBackground
+    case leaderboardGroupBackground
+    case followedUsersSectionHeader
+    
+    var reuseIdentifier: String {
+        return rawValue
     }
     
+    var viewKind: String {
+        return rawValue
+    }
+    
+    var viewClass: UICollectionReusableView.Type {
+        switch self {
+        case .leaderboardBackground:
+            return SectionBackgroundView.self
+        case .leaderboardGroupBackground:
+            return UICollectionReusableView.self
+        default:
+            return NamedSectionHeaderView.self
+        }
+    }
+    
+    var itemType: SupplementaryItemType {
+        switch self {
+        case .leaderboardBackground:
+            return .layoutDecorationView
+        default:
+            return .collectionSupplementaryView
+        }
+    }
+}
+
+class SectionBackgroundView: UICollectionReusableView {
+    
+    override func didMoveToSuperview() {
+        backgroundColor = .systemGray6
+    }
     
 }

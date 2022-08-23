@@ -102,8 +102,10 @@ class UserCollectionViewController: UICollectionViewController {
     
     func createDataSource() -> DataSourceType {
         let dataSource = DataSourceType(collectionView: collectionView) { collectionView, indexPath, item in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "User", for: indexPath) as! PrimarySecondaryTextCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "User", for: indexPath) as! SelectionIndicatingPrimarySecondaryTextCollectionViewCell
             cell.primaryTextLabel.text = item.user.name
+            cell.contentView.backgroundColor = item.user.color?.uiColor ?? UIColor.systemGray4
+            cell.layer.cornerRadius = 8
             return cell
         }
         return dataSource

@@ -47,6 +47,8 @@ class UserDetailViewController: UIViewController {
             default: break
             }
         }
+        
+        view.backgroundColor = user.color?.uiColor ?? .white
 
     }
     
@@ -78,6 +80,15 @@ class UserDetailViewController: UIViewController {
             case leading
             case category(_ category: Category)
             
+            var sectionColor: UIColor {
+                switch self {
+                case .leading:
+                    return .systemGray4
+                case .category(let category):
+                    return category.color.uiColor
+                }
+            }
+            
             static func < (lhs: Section, rhs: Section) -> Bool {
                 switch (lhs, rhs) {
                 case (.leading, .category), (.leading, .leading):
@@ -89,7 +100,6 @@ class UserDetailViewController: UIViewController {
                 }
             }
         }
-        
         typealias Item = HabitCount
     }
     
@@ -109,12 +119,12 @@ class UserDetailViewController: UIViewController {
             case .failure:
                 self.model.userStats = nil
             }
-            
+
             DispatchQueue.main.async {
-                
+                self.updateCollectionView()
             }
         }
-        
+
         HabitLeadStatisticsRequest(userID: user.id).send { result in
             switch result {
             case .success(let userStats):
@@ -122,9 +132,9 @@ class UserDetailViewController: UIViewController {
             case .failure:
                 self.model.leadingStats = nil
             }
-            
+
             DispatchQueue.main.async {
-                
+                self.updateCollectionView()
             }
         }
     }
@@ -141,7 +151,7 @@ class UserDetailViewController: UIViewController {
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                 heightDimension: .absolute(36))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: "header", alignment: .top)
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: "SectionHeader", alignment: .top)
         sectionHeader.pinToVisibleBounds = true
         
         let section = NSCollectionLayoutSection(group: group)
@@ -153,57 +163,52 @@ class UserDetailViewController: UIViewController {
     
     func updateCollectionView() {
         guard let userStatistics = model.userStats,
-              let leadingStatistics = model.leadingStats else { return }
-        
-        var itemsBySection = userStatistics.habitCounts.reduce(into:
-                        [ViewModel.Section: [ViewModel.Item]]()) { partialResult, habitCount in
+            let leadingStatistics = model.leadingStats else { return }
+
+        var itemsBySection = userStatistics.habitCounts.reduce(into: [ViewModel.Section: [ViewModel.Item]]()) { partial, habitCount in
             let section: ViewModel.Section
-            
+
             if leadingStatistics.habitCounts.contains(habitCount) {
                 section = .leading
             } else {
                 section = .category(habitCount.habit.category)
             }
-            
-            partialResult[section, default: []].append(habitCount)
+
+            partial[section, default: []].append(habitCount)
         }
-        
+
         itemsBySection = itemsBySection.mapValues { $0.sorted() }
-        
+
         let sectionIDs = itemsBySection.keys.sorted()
-        
+
         dataSource.applySnapshotUsing(sectionIDs: sectionIDs, itemsBySection: itemsBySection)
-        
     }
     
     func createDataSource() -> DataSourceType {
-        let dataSource = DataSourceType(collectionView: collectionView) {
-            (collectionView, indexPath, habitStat) -> UICollectionViewCell? in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HabitCount",
-                                                          for: indexPath) as! PrimarySecondaryTextCollectionViewCell
-            
+        let dataSource = DataSourceType(collectionView: collectionView) { (collectionView, indexPath, habitStat) -> UICollectionViewCell? in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HabitCount", for: indexPath) as! PrimarySecondaryTextCollectionViewCell
+
             cell.primaryTextLabel.text = habitStat.habit.name
             cell.secondaryTextLabel.text = "\(habitStat.count)"
-            
+
             return cell
         }
-        
-        dataSource.supplementaryViewProvider = {
-            (collectionView, category, indexPath) in
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: self.headerKind,
-                                                                         withReuseIdentifier: self.headerIdentifier,
-                                                                         for: indexPath) as! NamedSectionHeaderView
+
+        dataSource.supplementaryViewProvider = { (collectionView, category, indexPath) in
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: "SectionHeader", withReuseIdentifier: "HeaderView", for: indexPath) as! NamedSectionHeaderView
+
             let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
-            
+
             switch section {
             case .leading:
                 header.nameLabel.text = "Leading"
             case .category(let category):
                 header.nameLabel.text = category.name
             }
-            
+
             return header
         }
+
         return dataSource
     }
     
